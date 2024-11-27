@@ -32,6 +32,12 @@ class CityConfigurator:
                 self.grid_x, self.grid_y, self.height_grid_map = self.gen_height_grid_map()
                 if SAVE_NEW_MAP:
                     to_be_stored = (self.buildings, map_x_len, map_y_len, self.grid_x, self.grid_y, self.height_grid_map)
+                    
+                    print("Saving data with shapes:")
+                    print("Buildings shape:", self.buildings.shape)
+                    print("Grid X shape:", self.grid_x.shape)
+                    print("Grid Y shape:", self.grid_y.shape)
+                    print("Height grid map shape:", self.height_grid_map.shape)
                     save(city_file_name, to_be_stored)
             self.tallest_bld_height = np.max(self.height_grid_map.ravel())
 
@@ -148,10 +154,15 @@ class CityConfigurator:
                                                 u_c.bld_height_max - u_c.bld_height_avg)) + u_c.bld_height_avg)
                                 bld_h = max(bld_h, u_c.bld_height_min)
                                 bld_h = min(bld_h, u_c.bld_height_max)
+                                x1 = float(x1)
+                                y1 = float(y1)
+                                x2 = float(x2)
+                                y2 = float(y2)
+                                bld_h = float(bld_h)
                                 building = np.array([[[x1, y1, bld_h],
-                                                      [x2, y1, bld_h],
-                                                      [x2, y2, bld_h],
-                                                      [x1, y2, bld_h]]], dtype=float)
+                                                    [x2, y1, bld_h],
+                                                    [x2, y2, bld_h],
+                                                    [x1, y2, bld_h]]], dtype=float)
                                 city_blds = np.r_[city_blds, building]
         return city_blds, map_x_len, map_y_len
 
