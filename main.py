@@ -8,6 +8,8 @@ def main():
     args = get_common_args()
     if args.alg == 'qmix':
         args = get_mixer_args(args)
+    if args.alg == 'iql':
+        args = get_mixer_args(args)
 
     if args.map == 'RBM':
         from config.RBM_define import params

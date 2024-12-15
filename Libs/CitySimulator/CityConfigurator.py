@@ -5,9 +5,10 @@ from .CityDefines import *
 
 
 class CityConfigurator:
-    def __init__(self, gen_new_map=False, save_map=False, urban_config=CityConfigStr(), city_file_name=None):
+    def __init__(self, gen_new_map=False, gen_cust_map=True, save_map=False, urban_config=CityConfigStr(), city_file_name=None):
 
         GENERATE_RANDOM_MAP = gen_new_map
+        GENERATE_CUSTOM_MAP = gen_cust_map # modified code here
         SAVE_NEW_MAP = save_map
         map_ready = 0
         self.tallest_bld_height = 0
@@ -18,6 +19,13 @@ class CityConfigurator:
         if GENERATE_RANDOM_MAP:
             self.buildings, map_x_len, map_y_len = self.generate_city_topology()
             map_ready = 1
+
+        elif GENERATE_CUSTOM_MAP: # modified code from here
+
+            self.buildings, map_x_len, map_y_len = self.generate_cust_city_topology()
+
+            map_ready = 1 # modified code until here
+
         elif city_file_name is not None:
             self.buildings, map_x_len, map_y_len, self.grid_x, self.grid_y, self.height_grid_map = load(
                 city_file_name, allow_pickle=True)
@@ -28,11 +36,13 @@ class CityConfigurator:
             self.urban_config.map_y_len = map_y_len
             self.num_blds = len(self.buildings)
 
-            if GENERATE_RANDOM_MAP:
+            if GENERATE_RANDOM_MAP or GENERATE_CUSTOM_MAP: # modified code here
                 self.grid_x, self.grid_y, self.height_grid_map = self.gen_height_grid_map()
                 if SAVE_NEW_MAP:
+                    # to_be_stored = (self.buildings, map_x_len, map_y_len, self.grid_x, self.grid_y, self.height_grid_map)
+                    # to_be_stored = np.array((self.buildings, map_x_len, map_y_len, self.grid_x, self.grid_y, self.height_grid_map), dtype=object)
                     to_be_stored = (self.buildings, map_x_len, map_y_len, self.grid_x, self.grid_y, self.height_grid_map)
-                    
+
                     print("Saving data with shapes:")
                     print("Buildings shape:", self.buildings.shape)
                     print("Grid X shape:", self.grid_x.shape)
@@ -44,6 +54,243 @@ class CityConfigurator:
 
     ''' Generate a topology for the city by using the set of parameters (dict)
     which was initialized in the constructor function (above) '''
+
+    def generate_cust_city_topology(self): # added this funciton
+        # An array containing all the buildings (to be filled later)
+        city_blds = np.zeros(shape=[0, 4, 3], dtype=float)
+        u_c = self.urban_config
+        map_x_len = u_c.map_x_len
+        map_y_len = u_c.map_y_len
+
+        max_y = 375  # Maximum Y-coordinate for inverting
+
+        # Building 1
+        building_1 = np.array([[[251, max_y - 3, 5],
+                                [386, max_y - 4, 5],
+                                [385, max_y - 13, 5],
+                                [250, max_y - 14, 5]]], dtype=float)
+
+        # Building 2
+        building_2 = np.array([[[404, max_y - 4, 10],
+                                [467, max_y - 4, 10],
+                                [468, max_y - 108, 10],
+                                [405, max_y - 106, 10]]], dtype=float)
+
+        # Building 3
+        building_3 = np.array([[[325, max_y - 48, 10],
+                                [377, max_y - 49, 10],
+                                [379, max_y - 108, 10],
+                                [324, max_y - 107, 10]]], dtype=float)
+
+        # Building 4
+        building_4 = np.array([[[377, max_y - 123, 20],
+                                [407, max_y - 122, 20],
+                                [407, max_y - 181, 20],
+                                [378, max_y - 181, 20]]], dtype=float)
+
+        # Building 5
+        building_5 = np.array([[[119, max_y - 182, 5],
+                                [469, max_y - 181, 5],
+                                [470, max_y - 208, 5],
+                                [119, max_y - 209, 5]]], dtype=float)
+
+        # Building 6
+        building_6 = np.array([[[431, max_y - 126, 20],
+                                [467, max_y - 126, 20],
+                                [468, max_y - 181, 20],
+                                [431, max_y - 181, 20]]], dtype=float)
+
+        # Building 7
+        building_7 = np.array([[[8, max_y - 163, 30],
+                                [41, max_y - 162, 30],
+                                [42, max_y - 201, 30],
+                                [6, max_y - 203, 30]]], dtype=float)
+
+        # Building 8
+        building_8 = np.array([[[38, max_y - 167, 5],
+                                [65, max_y - 178, 5],
+                                [54, max_y - 202, 5],
+                                [31, max_y - 192, 5]]], dtype=float)
+
+        # Building 9
+        building_9 = np.array([[[49, max_y - 177, 5],
+                                [77, max_y - 186, 5],
+                                [64, max_y - 250, 5],
+                                [30, max_y - 246, 5]]], dtype=float)
+
+        # Building 10
+        building_10 = np.array([[[70, max_y - 226, 5],
+                                [396, max_y - 277, 5],
+                                [392, max_y - 305, 5],
+                                [65, max_y - 250, 5]]], dtype=float)
+
+        # Building 11
+        building_11 = np.array([[[241, max_y - 14, 15],
+                                [325, max_y - 13, 15],
+                                [325, max_y - 107, 15],
+                                [241, max_y - 106, 15]]], dtype=float)
+
+        # Building 12
+        building_12 = np.array([[[101, max_y - 255, 20],
+                                [127, max_y - 260, 20],
+                                [123, max_y - 296, 20],
+                                [95, max_y - 290, 20]]], dtype=float)
+
+        # Building 13
+        building_13 = np.array([[[153, max_y - 264, 20],
+                                [183, max_y - 269, 20],
+                                [175, max_y - 302, 20],
+                                [148, max_y - 299, 20]]], dtype=float)
+
+        # Building 14
+        building_14 = np.array([[[207, max_y - 274, 20],
+                                [233, max_y - 277, 20],
+                                [229, max_y - 311, 20],
+                                [201, max_y - 306, 20]]], dtype=float)
+
+        # Building 15
+        building_15 = np.array([[[257, max_y - 281, 20],
+                                [287, max_y - 286, 20],
+                                [282, max_y - 317, 20],
+                                [255, max_y - 314, 20]]], dtype=float)
+
+        # Building 16
+        building_16 = np.array([[[312, max_y - 291, 20],
+                                [338, max_y - 296, 20],
+                                [329, max_y - 331, 20],
+                                [304, max_y - 323, 20]]], dtype=float)
+
+        # Building 17
+        building_17 = np.array([[[365, max_y - 301, 20],
+                                [391, max_y - 304, 20],
+                                [380, max_y - 344, 20],
+                                [356, max_y - 337, 20]]], dtype=float)
+
+        # Building 18
+        building_18 = np.array([[[423, max_y - 260, 30],
+                                [469, max_y - 271, 30],
+                                [456, max_y - 317, 30],
+                                [412, max_y - 307, 30]]], dtype=float)
+
+        # Building 19
+        building_19 = np.array([[[412, max_y - 209, 15],
+                                [401, max_y - 249, 15],
+                                [373, max_y - 251, 15],
+                                [375, max_y - 207, 15]]], dtype=float)
+
+        # Building 20
+        building_20 = np.array([[[324, max_y - 121, 20],
+                                [352, max_y - 122, 20],
+                                [353, max_y - 182, 20],
+                                [322, max_y - 181, 20]]], dtype=float)
+
+        # Building 21
+        building_21 = np.array([[[241, max_y - 122, 20],
+                                [303, max_y - 123, 20],
+                                [301, max_y - 181, 20],
+                                [241, max_y - 181, 20]]], dtype=float)
+
+        # Building 22
+        building_22 = np.array([[[187, max_y - 121, 20],
+                                [215, max_y - 121, 20],
+                                [216, max_y - 182, 20],
+                                [186, max_y - 183, 20]]], dtype=float)
+
+        # Building 23
+        building_23 = np.array([[[121, max_y - 121, 20],
+                                [149, max_y - 121, 20],
+                                [149, max_y - 183, 20],
+                                [121, max_y - 182, 20]]], dtype=float)
+
+        # Building 24
+        building_24 = np.array([[[41, max_y - 124, 15],
+                                [114, max_y - 124, 15],
+                                [112, max_y - 148, 15],
+                                [42, max_y - 157, 15]]], dtype=float)
+
+        # Building 25
+        building_25 = np.array([[[295, max_y - 261, 15],
+                                [288, max_y - 224, 15],
+                                [351, max_y - 251, 15],
+                                [322, max_y - 265, 15]]], dtype=float)
+
+        # Building 26
+        building_26 = np.array([[[232, max_y - 15, 5],
+                                [239, max_y - 14, 5],
+                                [239, max_y - 101, 5],
+                                [232, max_y - 102, 5]]], dtype=float)
+
+        
+        city_blds = np.r_[city_blds, building_1, building_2, building_3, building_4, building_5, building_6, building_7,
+                            building_8, building_9, building_10, building_11, building_12, building_13, building_14, 
+                            building_15, building_16, building_17, building_18, building_19,
+                            building_20, building_21, building_22, building_23, building_24, building_25, building_26]
+
+        return city_blds, map_x_len, map_y_len
+
+
+    # def generate_cust_city_topology(self): # added this funciton
+    #     # An array containing all the buildings (to be filled later)
+    #     city_blds = np.zeros(shape=[0, 4, 3], dtype=float)
+
+    #     # define each building one by one using its corners, and add it to the city_blds matrix
+    #     # Note that the height of the building is defined in the third argument "bld_h"
+
+
+    #     # Building 1
+    #     building_1 = np.array([[[25, 250, 50],
+    #                             [75, 250, 50],
+    #                             [75, 320, 50],
+    #                             [25, 320, 50]]], dtype=float)
+
+    #     # Building 2
+    #     building_2 = np.array([[[75, 260, 25],
+    #                             [95, 250, 25],
+    #                             [105, 290, 25],
+    #                             [75, 300, 25]]], dtype=float)
+
+    #     # Building 3
+    #     building_3 = np.array([[[80, 180, 35],
+    #                             [110, 160, 35],
+    #                             [125, 275, 35],
+    #                             [95, 285, 35]]], dtype=float)
+
+    #     # Building 4
+    #     building_4 = np.array([[[70, 150, 40],
+    #                             [155, 140, 40],
+    #                             [160, 170, 40],
+    #                             [75, 180, 40]]], dtype=float)
+
+    #     # Building 5
+    #     building_5 = np.array([[[157, 165, 30],
+    #                             [360, 127, 30],
+    #                             [361, 132, 30],
+    #                             [160, 170, 30]]], dtype=float)
+
+    #     # Building 6
+    #     building_6 = np.array([[[159, 87, 45],
+    #                             [188, 85, 45],
+    #                             [192.5, 161, 45],
+    #                             [163.5, 165, 45]]], dtype=float)
+
+    #     # Building 7
+    #     building_7 = np.array([[[194.5, 84, 50],
+    #                             [223.5, 82, 50],
+    #                             [228, 156, 50],
+    #                             [199, 160, 50]]], dtype=float)
+
+    #     # Combine all buildings into the city_blds array
+    #     city_blds = np.r_[city_blds, building_1, building_2, building_3, building_4, building_5, building_6, building_7]
+
+        
+    #     # city_blds = np.r_[city_blds, building_A, ...]
+
+    #     # Just for ease of use
+    #     u_c = self.urban_config
+    #     map_x_len = u_c.map_x_len
+    #     map_y_len = u_c.map_y_len
+
+    #     return city_blds, map_x_len, map_y_len
 
     def generate_city_topology(self):
         # An array containing all the buildings (to be filled later)

@@ -123,9 +123,11 @@ class DataCollection(EnvironmentBase):
         self.obs_own_feats_size = 2
 
         # sight range between UAV and device
-        self.device_sight_range = 10
+        # self.device_sight_range = 10
+        self.device_sight_range = 5
         # sight range between UAVs
-        self.uav_sight_range = 10
+        # self.uav_sight_range = 10
+        self.uav_sight_range = 5
 
         # reward setting
         self.reward_scale = 1000

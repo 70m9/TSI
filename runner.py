@@ -96,23 +96,46 @@ class Runner:
         return total_collected_data / self.args.evaluate_epoch, rewards / self.args.evaluate_epoch, trjs, device_idx, action_record
 
     def plt(self, num=None):
-        plt.figure()
+        plt.figure(figsize=(10, 8))  # Increase figure size
 
-        plt.cla()
         plt.subplot(2, 1, 1)
-        plt.plot(range(len(self.episode_data)), self.episode_data)
-        plt.xlabel('episodes*{}'.format(self.args.evaluate_cycle))
-        plt.ylabel('episode_data')
+        plt.plot(range(len(self.episode_data)), self.episode_data, label='Episode Data')
+        plt.xlabel('Episodes * {}'.format(self.args.evaluate_cycle), labelpad=10)  # Add padding
+        plt.ylabel('Episode Data', labelpad=10)
+        plt.legend()
 
         plt.subplot(2, 1, 2)
-        plt.plot(range(len(self.episode_rewards)), self.episode_rewards)
-        plt.xlabel('episodes*{}'.format(self.args.evaluate_cycle))
-        plt.ylabel('episode_rewards')
+        plt.plot(range(len(self.episode_rewards)), self.episode_rewards, label='Episode Rewards')
+        plt.xlabel('Episodes * {}'.format(self.args.evaluate_cycle), labelpad=10)
+        plt.ylabel('Episode Rewards', labelpad=10)
+        plt.legend()
 
+        plt.tight_layout()  # Automatically adjust subplot parameters
+
+        # Save plots and data
         plt.savefig(self.save_path + '/plt_{}.png'.format(str(num)), format='png')
         np.save(self.save_path + '/episode_data_{}'.format(str(num)), self.episode_data)
         np.save(self.save_path + '/episode_rewards_{}'.format(str(num)), self.episode_rewards)
         plt.close()
+
+    # def plt(self, num=None):
+    #     plt.figure()
+
+    #     plt.cla()
+    #     plt.subplot(2, 1, 1)
+    #     plt.plot(range(len(self.episode_data)), self.episode_data)
+    #     plt.xlabel('episodes*{}'.format(self.args.evaluate_cycle))
+    #     plt.ylabel('episode_data')
+
+    #     plt.subplot(2, 1, 2)
+    #     plt.plot(range(len(self.episode_rewards)), self.episode_rewards)
+    #     plt.xlabel('episodes*{}'.format(self.args.evaluate_cycle))
+    #     plt.ylabel('episode_rewards')
+
+    #     plt.savefig(self.save_path + '/plt_{}.png'.format(str(num)), format='png')
+    #     np.save(self.save_path + '/episode_data_{}'.format(str(num)), self.episode_data)
+    #     np.save(self.save_path + '/episode_rewards_{}'.format(str(num)), self.episode_rewards)
+    #     plt.close()
 
     def federated_run(self, i, train_steps, evaluate_steps, episode_steps, data_train_list, reward_train_list,
                       data_evl_list, reward_evl_list, best_episode_data, model):

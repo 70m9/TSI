@@ -218,10 +218,12 @@ class SLAL:
         # get the first key of the buffer
         unknown_user_idx = list(self.localization_buff.keys())
         measurements = self.read_from_localization_buff(user_id=unknown_user_idx[0])
+        print(measurements)
         for meas in measurements:
             positions.append(meas[5:8])
         # change the positions to numpy array
         points = np.array(positions)
+        # print(points)
         # Remove duplicates and get the original indices
         unique_points, unique_indices = np.unique(points, axis=0, return_index=True)
 

@@ -65,8 +65,8 @@ if __name__ == '__main__':
         runner.agents.policy.eval_parameters = list(runner.agents.policy.eval_qmix_net.parameters()) + list(runner.agents.policy.eval_rnn.parameters())
     
     if args.alg == 'iql':
-        if os.path.exists(model_dir + '/final_rnn_net_params.pkl'):
-            path_rnn = model_dir + '/final_rnn_net_params.pkl'
+        if os.path.exists(model_dir + '/best_rnn_net_params.pkl'):
+            path_rnn = model_dir + '/best_rnn_net_params.pkl'
             map_location = device
             runner.agents.policy.eval_rnn.load_state_dict(torch.load(path_rnn, map_location=map_location))
             print('Successfully load the model: {}'.format(path_rnn))
